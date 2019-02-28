@@ -1,0 +1,59 @@
+{% extends 'sms/ziban.html' %}
+{% block liuliang %}
+	<style>
+		#mychart {
+		    margin:10px 10px 10px 10px;
+		    width:90%;
+		    max-width: 800px;
+		    height:400px;
+		}
+	</style>
+
+      <p4>短信报警趋势图</p4>
+      <div id="mychart"></div>
+    <script src="http://cdn.bootcss.com/Chart.js/2.1.6/Chart.bundle.js"></script>
+    <script type="text/javascript">
+
+
+		var Y = document.getElementById("mychart");
+		var a = []
+		var b = []
+		var sanguoh = []
+		var sg2h = []
+		var hhwh = []
+		var myDataValues = []
+		{% for item in result %}
+		     D = {}
+		     D['date'] = {{item.dt}}
+		     //b.push({{item.data1}})
+		     //console.log({{item.projeck_num}})
+		     //console.log({{item.projeck_num.items}})
+		     {% for project,num in item.projeck_num.items  %}
+			//console.log("{{project}}")	
+			{% if project == "sanguo" %}
+				D['sanguo'] = {{num}}
+			{% elif project == "sg2" %}
+				D['sg2'] = {{num}}
+			{% elif project == "hhw" %}
+				D['hhw'] = {{num}}
+			{% endif %}
+      
+                     {% endfor  %}
+		     myDataValues.push(D)
+                {% endfor  %}
+		
+	console.log(myDataValues)	
+	var mychart = new Y.Chart(
+				{
+		                        dataProvider:myDataValues,
+		                        render:"#mychart",
+		                        type:"area",
+		                        stacked:true,
+		                        categoryType:"time",
+		                        categoryKey:"date",
+		                        interactionType:"planar"
+		                    });
+                
+    </script>
+
+{% endblock %}

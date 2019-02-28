@@ -1,0 +1,228 @@
+{% extends 'sms/ziban.html' %}
+{% block liuliang %}
+
+	<div id="main" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+	 var a = []
+                var b = []
+                var sanguoh = []
+                var sg2h = []
+                var hhwh = []
+                var daomuh = []
+                var vnsg2h = []
+                var thsg2h = []
+                var twsg2h = []
+                var jpsg2h = []
+                var bdxh = []
+                var dashengh = []
+                var matchh = []
+                var krsg2h = []
+                var twsgh = []
+                var fkdwch = []
+                var shipgirlh = []
+                {% for item in result %}
+                     a.push({{item.dt}})
+                     b.push({{item.data1}})
+                     //console.log({{item.projeck_num}})
+                     //console.log({{item.projeck_num.items}})
+                     {% for project,num in item.projeck_num.items  %}
+                        console.log("{{project}}")
+                        {% if project == "sanguo" %}
+                                console.log("{{item.projeck_num}}")
+                                sanguoh.push({{num}})
+                        {% elif project == "sg2" %}
+                                sg2h.push({{num}})
+                        {% elif project == "hhw" %}
+                                hhwh.push({{num}})
+                        {% elif project == "daomu" %}
+                                daomuh.push({{num}})
+                        {% elif project == "vnsg2" %}
+                                vnsg2h.push({{num}})
+                        {% elif project == "thsg2" %}
+                                thsg2h.push({{num}})
+                        {% elif project == "twsg2" %}
+                                twsg2h.push({{num}})
+                        {% elif project == "jpsg2" %}
+                                jpsg2h.push({{num}})
+                        {% elif project == "bdx" %}
+                                bdxh.push({{num}})
+                        {% elif project == "dasheng" %}
+                                dashengh.push({{num}})
+                        {% elif project == "match" %}
+                                matchh.push({{num}})
+                        {% elif project == "krsg2" %}
+                                krsg2h.push({{num}})
+                        {% elif project == "twsg" %}
+                                twsgh.push({{num}})
+                        {% elif project == "fkdwc" %}
+                                fkdwch.push({{num}})
+                        {% else  %}
+                                shipgirlh.push({{num}})
+                        {% endif %}
+      
+                     {% endfor  %}
+                {% endfor  %}
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                
+                var option = {
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['sanguo','hhw','sg2','daomu','thsg2','twsg2','jpsg2','bdx','dasheng','match','krsg2','twsg','fkdwc','shipgirl']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : a
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'sanguo',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:sanguoh
+        },
+        {
+            name:'hhw',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:hhwh
+        },
+        {
+            name:'sg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:sg2h
+        },
+        {
+            name:'daomu',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:daomuh
+        },
+        {
+            name:'vnsg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:vnsg2h
+        },
+	{
+            name:'thsg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:thsg2h
+        },
+	{
+            name:'twsg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:twsg2h
+        },
+	{
+            name:'jpsg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:jpsg2h
+        },
+	{
+            name:'bdx',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:bdxh
+        },
+	{
+            name:'dasheng',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:dashengh
+        },
+	{
+            name:'match',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:matchh
+        },
+	{
+            name:'krsg2',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:krsg2h
+        },
+	{
+            name:'twsg',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:twsgh
+        },
+	{
+            name:'fkdwc',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:fkdwch
+        },
+	{
+            name:'shipgirl',
+            type:'line',
+            stack: '总量',
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data:shipgirlh
+        },
+    ]
+};
+        
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+    </script>
+{% endblock %}
