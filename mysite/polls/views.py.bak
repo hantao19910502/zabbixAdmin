@@ -1,0 +1,55 @@
+# Create your views here.
+from django.shortcuts import render, render_to_response, redirect
+from django.http import HttpResponseRedirect
+from django.template.context import RequestContext
+from django.contrib.auth import authenticate
+from django.http.response import HttpResponse
+
+import sqlite3
+
+def polls(request):
+    
+    conn = sqlite3.connect('/tmp/test')
+    cursor = conn.cursor()
+    sql = "select * from mapping"
+    cursor.execute(sql)
+    data1 = cursor.fetchall()
+    zabbix_trigger_name_mapping = []
+    for item in data1:
+	zabbix_trigger_name = item[1]
+	mapping = item[2]
+	tmp = {'zabbix_trigger_name':zabbix_trigger_name,'mapping':mapping}
+	zabbix_trigger_name_mapping.append(tmp)
+    cursor.close()
+    ret = {'zabbix_trigger_name_mapping':zabbix_trigger_name_mapping}
+    #conn.close()
+    print ret
+    return render_to_response('polls/zhanshi.html',ret)    
+    #return HttpResponse(ret)
+
+def select_data(request):
+    
+    db = MySQLdb.connect("192.168.10.61","admin","BabelTime","zabbix")
+    cursor = db.cursor()
+    cursor.execute("select count(*) from triggers group by description")
+    data = cursor.fetchall()
+    print data
+    db.close()
+    return data
+
+def api(request):
+    #zabbix_trigger_name = request.POST.get('zabbix_trigger_name',None)
+    #mapping = request.POST.get('mapping',None)
+    ##return HttpResponse({'zabbix_trigger_name':zabbix_trigger_name,'mapping':mapping}
+    #return HttpResponse('OK')
+    
+    zabbix_trigger_name = request.GET['zabbix_trigger_name']
+    conn = sqlite3.connect('/tmp/test')
+    cursor = conn.cursor()
+    sql = "select mapping_name from mapping where zabbix_trigger_name = '%s'"%(zabbix_trigger_name)
+    print sql
+    cursor.execute(sql)
+    data1 = cursor.fetchall()
+    cursor.close()
+    return HttpResponse(str(data1))
+select_data()

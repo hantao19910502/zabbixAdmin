@@ -1,0 +1,33 @@
+{% extends 'polls/ziban.html' %}
+{% block zhanshi %}
+
+{#    <form action="web/edit/1" method="POST">#}
+{##}
+{#        <p>HOSTNAME:<input name="hostname" value="{{ hostname }}"/></p>#}
+{#        <p>IP:<input name="ip" value="{{ip}}"/></p>#}
+{#        <p>I:<input name="ip" value="{{ ip}}"/></p>#}
+{#        <input type='submit' value="添加">#}
+{##}
+{#   </form>#}
+    <ul class="breadcrumb" id="breadcrumb_1">
+          <li><a href="#">首页</a> <span class="divider">/</span></li>
+          <li><a href="#">{{ status_name }}</a> <span class="divider">/</span></li>
+          <li class="active">{{ ip }}</li>
+    </ul>
+
+    <form  action="/polls/edit/{{zabbix_trigger_name}}/{{mapping_name}}/{{status}}" method="POST">
+          <fieldset>
+            <legend>Legend</legend>
+            <input type="text" placeholder="Type something…" name="zabbix_trigger_name" value="{{zabbix_trigger_name}}">&nbsp zabbix_trigger_name 
+            <br/>
+            <br/>
+            <input type="text" placeholder="Type something…" name="mapping_name" value="{{mapping_name}}">&nbsp mapping_name
+            <br/>
+            <br/>
+	    <input type="text" placeholder="Type something…" name="status" value="{{status}}">&nbsp status 
+            <br/>
+            <br/>
+            <button type="submit" class="btn">Submit</button>
+          </fieldset>
+    </form>
+{% endblock %}

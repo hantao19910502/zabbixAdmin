@@ -1,0 +1,228 @@
+{% extends 'sms/ziban.html' %}
+{% block liuliang %}
+
+
+{#     <div style="width: 500px;">#}
+      <p4>短信报警趋势图</p4>
+      <canvas id="myChart" style="width:40px; height:80px;"></canvas>
+{#	</div>#}
+
+    <script src="http://cdn.bootcss.com/Chart.js/2.1.6/Chart.bundle.js"></script>
+    <script type="text/javascript">
+
+
+		var ctx = document.getElementById("myChart").getContext("2d");
+		var a = []
+		var b = []
+		var sanguoh = []
+		var sg2h = []
+		var hhwh = []
+		var daomuh = []
+		var vnsg2h = []
+		var thsg2h = []
+		var twsg2h = []
+		var jpsg2h = []
+		var bdxh = []
+		var dashengh = []
+		var matchh = []
+		var krsg2h = []
+		var twsgh = []
+		var fkdwch = []
+		var shipgirlh = []
+		{% for item in result %}
+		     a.push({{item.dt}})
+		     b.push({{item.data1}})
+		     {% for project in projeck_list  %}
+			console.log("{{project}}")	
+			{% if project == "sanguo" %}
+				console.log("{{item.projeck_num}}")
+				sanguoh.push("{{item.projeck_num__project}}")
+			{% elif project == "sg2" %}
+				sg2h.push("{{item.projeck_num__project}}")
+			{% elif project == "hhw" %}
+				hhwh.push("{{item.projeck_num.project}}")
+			{% elif project == "daomu" %}
+				daomuh.push("{{item.projeck_num.project}}")
+			{% elif project == "vnsg2" %}
+				vnsg2h.push("{{item.projeck_num.project}}")
+			{% elif project == "thsg2" %}
+				thsg2h.push("{{item.projeck_num.project}}")
+			{% elif project == "twsg2" %}
+				twsg2h.push("{{item.projeck_num.project}}")
+			{% elif project == "jpsg2" %}
+				jpsg2h.push("{{item.projeck_num.project}}")
+			{% elif project == "bdx" %}
+				bdxh.push("{{item.projeck_num.project}}")
+			{% elif project == "dasheng" %}
+				dashengh.push("{{item.projeck_num.project}}")
+			{% elif project == "match" %}
+				matchh.push("{{item.projeck_num.project}}")
+			{% elif project == "krsg2" %}
+                                krsg2h.push("{{item.projeck_num.project}}")
+			{% elif project == "twsg" %}
+                                twsgh.push("{{item.projeck_num.project}}")
+			{% elif project == "fkdwc" %}
+                                fkdwch.push("{{item.projeck_num.project}}")
+			{% else  %}
+                                shipgirlh.push("{{item.projeck_num.project}}")
+			{% endif %}
+      
+                     {% endfor  %}
+                {% endfor  %}
+		var myChart  = new Chart(ctx,
+		{
+                        labels : ["January","February"],
+			title: 'test',
+			type: 'line',
+			data : {
+{#							labels : [{{ list }}],#}
+                            labels : a,
+			    datasets : [
+					 {
+					    name: "total",
+					    fillColor : "rgba(220,220,220,0.5)",
+					    strokeColor : "rgba(220,220,220,1)",
+					    pointColor : "rgba(220,220,220,1)",
+					    pointStrokeColor : "#fff",
+					    data : b,
+				         },
+                                         
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : sanguoh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : hhwh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : daomuh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : vnsg2h,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : thsg2h,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : twsg2h,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : jpsg2h,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : bdxh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : dashengh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : matchh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : krsg2h,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : twsgh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : fkdwch,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : shipgirlh,
+                                         },
+					{
+                                            name: "total",
+                                            fillColor : "rgba(220,220,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            pointColor : "rgba(220,220,220,1)",
+                                            pointStrokeColor : "#fff",
+                                            data : sg2h,
+                                         },
+
+				       ]
+				    },
+			options: {
+	         	   scales: {
+	             		      yAxes: [{
+	                 	      ticks: {
+	                     			beginAtZero:true,
+						scaleLabel :['test','test1'],
+	                                     }
+	             			  }]
+	                           }
+     		                } 
+                       
+
+                });
+    </script>
+
+{% endblock %}

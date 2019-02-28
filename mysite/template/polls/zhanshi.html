@@ -1,0 +1,179 @@
+{% extends 'polls/ziban.html' %}
+{% block zhanshi %}
+
+
+{#          <h1 class="page-header">Dashboard</h1>#}
+{##}
+{#          <div class="row placeholders">#}
+{##}
+{#              <div class="col-xs-6 col-sm-3 placeholder" style="width: 500px;">#}
+{#                    <canvas id="myChart" style="width:500px;height:500px;"   ></canvas>#}
+{#              </div>#}
+{##}
+{##}
+{#          </div>#}
+
+          <!--<h2 class="sub-header">Section title</h2>-->
+
+<!--
+        <ul class="breadcrumb" id="breadcrumb_1">
+          <li><a href="#">首页</a> <span class="divider">/</span></li>
+          <li><a href="#">{{ status_name }}</a> <span class="divider">/</span></li>
+
+        </ul>
+
+>-->
+	<style>
+	</style>
+	<div class="row">
+	  <form class="navbar-form navbar-right" action="/polls/polls/1/1" method='POST'>
+	  <select name="status" class="form-control" style="width:200px;" >
+		<option value="4">-------</option>
+		<option value="0">使用中</option>
+		<option value='1'>未使用</option>
+		<option value='3'>有问题</option>
+	  </select>
+            <input name='zabbix_name' type="text" class="form-control" placeholder="搜索触发器或别名">
+	  <input class="btn btn-primary" type='submit' value="搜索">
+          </form>
+	 </div>
+          <div class="row table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>zabbix Trigger Name</th>
+		  <th>Mapping</th>
+		  <th>edit</th>
+
+                </tr>
+              </thead>
+
+
+              <tbody>
+                {% for item in  result %}
+               		 <tr>
+               		         
+               		        <td>{{item.name}}</td>
+				{%  ifequal not item.alias  %}
+					<td>为空</td>
+				{% else %}
+					<td>{{item.alias}}</td>
+				
+               		        {% endifequal %}
+ 
+			        {%  ifequal not item.alias  %}
+               		         <td>
+               		                 <div class="btn-group">
+               		                       <a class="btn btn-primary" href="#"><i class="icon-user icon-white"><span class="label label-warning">未使用</span></i></a>
+               		                       <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+               		                       <ul class="dropdown-menu">
+               		                         <li><a href="/polls/edit/{{item.name}}/{{item.alias}}/"><i class="icon-pencil"></i> Edit</a></li>
+               		                         <li><a href="#"  onclick='Favor(this,"{{item.interfaces}}");'><i class="icon-trash"></i> Delete</a></li>
+               		                         <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+               		                         <li class="divider"></li>
+               		                         <li><a href="#"><i class="i"></i> Make admin</a></li>
+               		                       </ul>
+               		                </div>
+               		        </td>
+			        {% else %}
+				 {%  ifequal  item.status 3 %}
+                                         <td>
+                                         <div class="btn-group">
+                                               <a class="btn btn-primary" href="#"><i class="icon-user icon-white"><span class="label label-danger">有问题</span></i></a>
+                                               <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                                               <ul class="dropdown-menu">
+                                                 <li><a href="/polls/edit/{{item.name}}/{{item.alias}}/"><i class="icon-pencil"></i> Edit</a></li>
+                                                 <li><a href="#"  onclick='Favor(this,"{{item.interfaces}}");'><i class="icon-trash"></i> Delete</a></li>
+                                                 <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                                                 <li class="divider"></li>
+                                                 <li><a href="#"><i class="i"></i> Make admin</a></li>
+                                               </ul>
+                                        </div>
+				  {% else %}
+					<td>
+                                         <div class="btn-group">
+                                               <a class="btn btn-primary" href="#"><i class="icon-user icon-white"><span class="label label-info">使用中</span></i></a>
+                                               <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                                               <ul class="dropdown-menu">
+                                                 <li><a href="/polls/edit/{{item.name}}/{{item.alias}}/"><i class="icon-pencil"></i> Edit</a></li>
+                                                 <li><a href="#"  onclick='Favor(this,"{{item.interfaces}}");'><i class="icon-trash"></i> Delete</a></li>
+                                                 <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                                                 <li class="divider"></li>
+                                                 <li><a href="#"><i class="i"></i> Make admin</a></li>
+                                               </ul>
+                                        </div>
+                                	</td>	
+				     {% endifequal %}
+				{% endifequal %}
+	       		 	
+
+               		 </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          <div class="Paging" id='Pageing'>
+              <nav aria-label="..."><ul class="pager"><li>{{page}}</li></ul></nav>
+	</div>
+          </div>
+     <script src="http://cdn.bootcss.com/Chart.js/2.1.6/Chart.bundle.js"></script>
+
+     <script type="text/javascript">
+
+ // 设置参数
+ var data = {
+    labels: [
+        "禁止",
+        "宕机",
+        "非监控"
+    ],
+    datasets: [
+        {
+            data: [{{ status_html.1 }}, {{ status_html.2 }}, {{ status_html.0 }}],
+{#            data: [2, 3, 4],#}
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+};
+
+
+    // Get the context of the canvas element we want to select
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myBarChart = new Chart(ctx, {
+{#                                            type: 'pie',#}
+                                            type: 'doughnut',
+                                            data: data,
+                                            // options: options
+                                    });
+
+     function Favor(doc,ip) {
+         //删除机器
+         if (confirm('确认删除吗?')) {
+             $.ajax({
+                 url: '/web/deleteone/',
+                 data: {nip: ip},
+                 type: 'POST',
+                 success: function () {
+                     console.log('123');
+                     {#                    $(doc).text('不删除')#}
+                 }
+             });
+         }
+     }
+
+     function Favor_hours(doc) {
+         var int = this.innerHTML="/" + doc;
+         var elem_li = document.createElement('li'); // 生成一个 li元素
+         elem_li.innerHTML = '<a href="#"> '+ int + '</a> <span class="divider">/</span>'; // 设置元素的内容
+         document.getElementById('breadcrumb_1').appendChild(elem_li);
+     }
+</script>
+
+{% endblock %}

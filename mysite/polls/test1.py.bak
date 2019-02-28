@@ -1,0 +1,109 @@
+from flask import Flask,jsonify
+from flask import request
+
+app = Flask(__name__)
+import json
+import requests
+
+import sys
+import MySQLdb
+
+@app.route('/api',methods=['POST','GET'])
+def  get_hostname(ip):
+     sql = "select hostid from zabbix.interface where ip='%s'"%(ip)
+     db = MySQLdb.connect("192.168.10.61","zabbix","zabbix","zabbix") 
+     cursor = db.cursor()
+     cursor.execute(sql)
+     hostid = cursor.fetchall()[0][0] 
+     db.close()
+     return  hostid     
+
+def  get_hostid(hostname):
+     url = "http://192.168.10.61:8088/zbx/api_jsonrpc.php"
+     headers = {'content-type': 'application/json'}
+     get_host = json.dumps(
+          {
+              "jsonrpc": "2.0",
+              "method": "host.get",
+              "params": {
+                  "output": "extend",
+                  "filter": {
+                      "host": [
+                          hostname,
+                      ]
+                  }
+              },
+              "auth": 'e40f54a7efb0671b54073832e51693de',
+              "id": 1
+          }
+     )
+     e = requests.post(url, data=get_host, headers=headers)
+     result1 = e.text
+     result1 = result1.encode("utf-8")
+     result1 = eval(result1)
+     result = result1.get("result")
+     print result
+     result = result[0]
+     hostid = result.get("hostid")
+     return hostid
+
+def get_trigger(ip,triggername):
+    url = "http://192.168.10.61:8088/zbx/api_jsonrpc.php"
+    headers = {'content-type': 'application/json'}
+    get_trigger = json.dumps(
+        {
+            "jsonrpc": "2.0",
+            "method": "trigger.get",
+            "params": {
+            "output": [
+                "triggerid"
+            ],
+            "filter": {
+                "hostid": get_hostname(ip),"description": triggername
+
+            },
+            "sortorder": "DESC"
+            },
+            "auth": "e40f54a7efb0671b54073832e51693de",
+            "id": 1
+       }
+    )
+    e = requests.post(url, data=get_trigger, headers=headers)
+    result1 = e.text
+    result1 = result1.encode("utf-8")
+    result1 = eval(result1)
+    result = result1.get("result")
+    print result
+    result = result[0]
+    triggerid = result.get("triggerid")
+    return triggerid
+def login():
+    json_data = {}
+    json_data['hostid']= request.form['hostid']
+    json_data['triggerid']= request.form['triggerid']
+    json_data['status']= request.form['status']
+    print json_data
+    url = "http://192.168.10.61:8088/zbx/api_jsonrpc.php"
+    headers = {'content-type': 'application/json'}
+    change = json.dumps(
+            {
+        "jsonrpc": "2.0",
+        "method": "trigger.update",
+        "params": {
+            "hostid":json_data['hostid'],
+            "triggerid":json_data['triggerid'],
+            "status": json_data['status'] 
+        },
+        "auth": "519eb89b1471c6263f62d30da63af70d",
+        "id": 1
+        }
+        )
+
+    e = requests.post(url, data=change, headers=headers) 
+    print "e",e
+
+    return jsonify(json_data)
+
+if __name__ == "__main__":
+	
+    app.run('192.168.9.11')
